@@ -229,7 +229,9 @@
 
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+             '("melpa" . "http://melpa.org/packages/"))
+;;(add-to-list 'package-archives
+;;             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (package-initialize)
 
 (defvar required-packages '(auto-complete
@@ -300,4 +302,14 @@
 (global-set-key (kbd "<f5>") 'bookmark-bmenu-list) ;; открыть список закладок
 (setq bookmark-default-file (concat user-emacs-directory "bookmarks")) ;; хранить закладки в файл bookmarks в .emacs.d
 
-(global-set-key (kbd "<f11>") 'restart-emacs)
+(defun save-everything-and-restart ()
+    (interactive)
+    ;;;; for MS Windows
+    (when (system-is-windows)
+        (desktop-save win-init-path t))
+    ;;;; for GNU/Linux
+    (when (system-is-linux)
+        (desktop-save unix-init-path t))
+    (restart-emacs))
+
+(global-set-key (kbd "<f11>") 'save-everything-and-restart)
